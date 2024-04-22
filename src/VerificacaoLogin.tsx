@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import './App.css';
-import api from './services/api';
+import { api } from './services/api';
+import { setCookie } from 'nookies'; // Importe setCookie da biblioteca nookies
 
-const VerificacaoLogin = () => {
+const VerificacaoLogin = (props) => {
+    console.log(props.id)
+
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -16,15 +19,56 @@ const VerificacaoLogin = () => {
         });
     };
 
-    const handleOnSubmit = async (e : any) => {
+    const handleOnSubmit = async (e: any) => {
         e.preventDefault();
-        console.log('Dados do formulário:', formData);
+        try {
+            const response = await api.post('login', {
+                email: formData.username,
+                password: formData.password
+            });
+            
+            console.log(response);
+            
+            if (response.status === 200) {
+                const { token: tokenResult, refreshToken: refreshTokenResult, is_admin: isAdminResult } = response.data;
 
-        const response = await api.post('login', {
-            email: formData.username,
-            password: formData.password
-        })
-        console.log(response)
+                const refreshToken = refreshTokenResult?.id;
+                const userId = refreshTokenResult?.user_id;
+                const companyId = refreshTokenResult?.company_id;
+
+                setCookie(undefined, 'aceno.token', tokenResult, {
+                    maxAge: 60 * 60 * 24 * 30, // 30 days
+                    path: '/'
+                });
+
+                setCookie(undefined, 'aceno.refreshToken', refreshToken, {
+                    maxAge: 60 * 60 * 24 * 30, // 30 days
+                    path: '/'
+                });
+
+                setCookie(undefined, 'aceno.userId', userId, {
+                    maxAge: 60 * 60 * 24 * 30, // 30 days
+                    path: '/'
+                });
+
+                setCookie(undefined, 'aceno.companyId', companyId, {
+                    maxAge: 60 * 60 * 24 * 30, // 30 days
+                    path: '/'
+                });
+
+                setCookie(undefined, 'aceno.isAdmin', isAdminResult, {
+                    maxAge: 60 * 60 * 24 * 30, // 30 days
+                    path: '/'
+                });
+
+                api.defaults.headers.Authorization = `Bearer ${tokenResult}`;
+
+                // redirecionar
+
+            }
+        } catch (error) {
+            console.log('Deu erro', error);
+        }
     };
 
     return (
@@ -58,6 +102,6 @@ const VerificacaoLogin = () => {
             </div>
         </div>
     );
-}
+};
 
 export default VerificacaoLogin;
