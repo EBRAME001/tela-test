@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@700&display=swap');
+
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body{
+    background-image: linear-gradient(135deg, #ff464c 0%, #ff464c 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+#container{
+    display: flex;
+    width: 90vh;
+    height: 65vh;
+    background: white;
+    justify-content: center;
+    align-items: center;
+    border-radius: 70px;
+}
+
+#imagem{
+    width: 40%;
+    height: 80%;
+    object-fit: cover;
+    background-image: url("src/assets/aceno_robo.png");
+    background-position: center bottom;
+    margin-right: 5%;
+}
+
+#login {
+    width: 40%;
+    height: 80%;
+    flex-direction: column;
+    justify-content: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+h1{
+    display: flex;
+    justify-content: center;
+    color: red;
+    font-family: 'Ubuntu Mono', monospace;
+    font-weight: bold;
+    position: relative;
+    top: 145px;
+    letter-spacing: -6px;
+}
+
+input {
+    margin: 2% 0px ;
+    padding: 5%;
+    border-radius: 10px;
+    border: 0px;
+    background-color: #F9F3F3;
+    width: 75%;
+    font-family: Arial;
+    font-weight: 300;
+    font-size: 1.2em;
+    color: black;
+}
+
+button{
+    margin-top: 10px;
+    width: 35%;
+    height: 10%;
+    border-radius: 30px;
+    background-image: linear-gradient(135deg, #ff0058 0%, #ff464c 100%);
+}
