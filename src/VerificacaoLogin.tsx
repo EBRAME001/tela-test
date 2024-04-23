@@ -1,17 +1,15 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { api } from './services/api';
-import { setCookie } from 'nookies'; // Importe setCookie da biblioteca nookies
+import { setCookie } from 'nookies';
 
-const VerificacaoLogin = (props) => {
-    console.log(props.id)
-
+const VerificacaoLogin = ({ redirect }) => { // Adicione 'redirect' como propriedade
     const [formData, setFormData] = useState({
         username: '',
         password: ''
     });
 
-    const handleOnChange = (e: any) => {
+    const handleOnChange = (e:any) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
@@ -19,16 +17,16 @@ const VerificacaoLogin = (props) => {
         });
     };
 
-    const handleOnSubmit = async (e: any) => {
+    const handleOnSubmit = async (e:any) => {
         e.preventDefault();
         try {
             const response = await api.post('login', {
                 email: formData.username,
                 password: formData.password
             });
-            
+
             console.log(response);
-            
+
             if (response.status === 200) {
                 const { token: tokenResult, refreshToken: refreshTokenResult, is_admin: isAdminResult } = response.data;
 
@@ -37,34 +35,34 @@ const VerificacaoLogin = (props) => {
                 const companyId = refreshTokenResult?.company_id;
 
                 setCookie(undefined, 'aceno.token', tokenResult, {
-                    maxAge: 60 * 60 * 24 * 30, // 30 days
+                    maxAge: 60 * 60 * 24 * 30,
                     path: '/'
                 });
 
                 setCookie(undefined, 'aceno.refreshToken', refreshToken, {
-                    maxAge: 60 * 60 * 24 * 30, // 30 days
+                    maxAge: 60 * 60 * 24 * 30,
                     path: '/'
                 });
 
                 setCookie(undefined, 'aceno.userId', userId, {
-                    maxAge: 60 * 60 * 24 * 30, // 30 days
+                    maxAge: 60 * 60 * 24 * 30,
                     path: '/'
                 });
 
                 setCookie(undefined, 'aceno.companyId', companyId, {
-                    maxAge: 60 * 60 * 24 * 30, // 30 days
+                    maxAge: 60 * 60 * 24 * 30,
                     path: '/'
                 });
 
                 setCookie(undefined, 'aceno.isAdmin', isAdminResult, {
-                    maxAge: 60 * 60 * 24 * 30, // 30 days
+                    maxAge: 60 * 60 * 24 * 30,
                     path: '/'
                 });
 
                 api.defaults.headers.Authorization = `Bearer ${tokenResult}`;
 
-                // redirecionar
-
+                // Redirecionar para "http://localhost:5173/tabela" usando a função 'redirect'
+                redirect('http://localhost:5173/tabela');
             }
         } catch (error) {
             console.log('Deu erro', error);
