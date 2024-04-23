@@ -1,18 +1,23 @@
 * {
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 body {
+    font-family: Ebrima;
     background-color: #21D4FD;
     background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 table {
-    font-family: Ebrima;
-    border-collapse: collapse;
     width: 50vw;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
 .header-tabela th {
@@ -44,11 +49,11 @@ td {
     background-color: #eeedf4;
     padding: 20px;
     border: 1px solid #dddddd;
-    margin-top: 5px;
+    margin-top: 20px;
     border-radius: 30px;
-    height: max-content;
-    width: 50vw;
+    max-width: 50vw;
     text-align: center;
+    margin-bottom: 20px;
 }
 
 .botoes-container {
@@ -59,4 +64,16 @@ td {
 button {
     background: black;
     margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #333;
 }

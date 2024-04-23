@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { api } from "../../services/api";
 import "./tabela.css";
 
@@ -10,10 +11,8 @@ interface Queue {
     updated_at: string;
 }
 
-const SimpleTable = () => {
+const Tabela = () => {
     const [queues, setQueues] = useState<Queue[]>([]);
-    const [selectedQueue, setSelectedQueue] = useState<Queue | null>(null);
-    const [showLess, setShowLess] = useState<boolean>(false);
 
     useEffect(() => {
         api.get('queues')
@@ -24,64 +23,28 @@ const SimpleTable = () => {
             .catch((err) => console.log('Erro ao buscar dados da API:', err));
     }, []);
 
-    const handleQueueClick = (queue: Queue) => {
-        setSelectedQueue(queue);
-        setShowLess(false);
-    };
-
-    const handleShowLessClick = () => {
-        setShowLess(true);
-    };
-
-    const handleShowMoreClick = () => {
-        if (selectedQueue) {
-            // Redirecionar para a URL com o ID da fila
-            window.location.href = `http://localhost/queues/${selectedQueue.id}/tickets`;
-        }
-    };
-
     return (
         <div>
             <table>
                 <thead>
-                <tr className="header-tabela">
+                <tr>
                     <th>ID</th>
                     <th>Nome</th>
+                    <th>Detalhes</th>
                 </tr>
                 </thead>
                 <tbody>
                 {queues.map((queue: Queue) => (
                     <tr key={queue.id}>
                         <td>{queue.id}</td>
-                        <td onClick={() => handleQueueClick(queue)}>{queue.name}</td>
+                        <td>{queue.name}</td>
+                        <td><Link to={`/queues/${queue.id}`}>Ver Detalhes</Link></td>
                     </tr>
                 ))}
                 </tbody>
             </table>
-
-            {!showLess && selectedQueue && (
-                <div className="dados-adicionais">
-                    <h2>Detalhes da Fila</h2>
-                    <div>
-                        <p>ID: {selectedQueue.id}</p>
-                        <p>Nome: {selectedQueue.name}</p>
-                        <p>ID da Empresa: {selectedQueue.company_id}</p>
-                        <p>Data de Criação: {selectedQueue.created_at}</p>
-                        <p>Data de Atualização: {selectedQueue.updated_at}</p>
-                    </div>
-                </div>
-            )}
-
-            {!showLess && (
-                <div className="botoes-container">
-                    <button onClick={handleShowLessClick}>Exibir Menos</button>
-                    {selectedQueue && (
-                        <button onClick={handleShowMoreClick}>Ver Mais</button>
-                    )}
-                </div>
-            )}
         </div>
     );
 };
 
-export default SimpleTable;
+export default Tabela;
