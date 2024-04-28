@@ -12,8 +12,8 @@ interface Queue {
 
 const Queues = () => {
     const { id } = useParams<{ id: string }>();
-    const [queue, setQueue] = useState<Queue | null>(null); // Definindo um estado para armazenar os detalhes da fila
-
+    const [queue, setQueue] = useState<Queue | null>(null); 
+    
     useEffect(() => {
         const fetchData = async () => {
             try {

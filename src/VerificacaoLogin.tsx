@@ -1,103 +1,52 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './App.css';
 import { api } from './services/api';
 import { setCookie } from 'nookies';
 
-const VerificacaoLogin = ({ redirect }) => { // Adicione 'redirect' como propriedade
+const VerificacaoLogin = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
         password: ''
     });
 
-    const handleOnChange = (e:any) => {
+    const handleOnChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleOnSubmit = async (e:any) => {
+    const handleOnSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('login', {
-                email: formData.username,
-                password: formData.password
-            });
-
+            const response = await api.post('login', formData);
             console.log(response);
-
             if (response.status === 200) {
-                const { token: tokenResult, refreshToken: refreshTokenResult, is_admin: isAdminResult } = response.data;
+                const { token, refreshToken, is_admin: isAdmin, user_id: userId, company_id: companyId } = response.data;
 
-                const refreshToken = refreshTokenResult?.id;
-                const userId = refreshTokenResult?.user_id;
-                const companyId = refreshTokenResult?.company_id;
+                setCookie(null, 'aceno.token', token, { maxAge: 30 * 24 * 60 * 60, path: '/' });
+                setCookie(null, 'aceno.refreshToken', refreshToken, { maxAge: 30 * 24 * 60 * 60, path: '/' });
+                setCookie(null, 'aceno.userId', userId, { maxAge: 30 * 24 * 60 * 60, path: '/' });
+                setCookie(null, 'aceno.companyId', companyId, { maxAge: 30 * 24 * 60 * 60, path: '/' });
+                setCookie(null, 'aceno.isAdmin', isAdmin, { maxAge: 30 * 24 * 60 * 60, path: '/' });
 
-                setCookie(undefined, 'aceno.token', tokenResult, {
-                    maxAge: 60 * 60 * 24 * 30,
-                    path: '/'
-                });
-
-                setCookie(undefined, 'aceno.refreshToken', refreshToken, {
-                    maxAge: 60 * 60 * 24 * 30,
-                    path: '/'
-                });
-
-                setCookie(undefined, 'aceno.userId', userId, {
-                    maxAge: 60 * 60 * 24 * 30,
-                    path: '/'
-                });
-
-                setCookie(undefined, 'aceno.companyId', companyId, {
-                    maxAge: 60 * 60 * 24 * 30,
-                    path: '/'
-                });
-
-                setCookie(undefined, 'aceno.isAdmin', isAdminResult, {
-                    maxAge: 60 * 60 * 24 * 30,
-                    path: '/'
-                });
-
-                api.defaults.headers.Authorization = `Bearer ${tokenResult}`;
-
-                // Redirecionar para "http://localhost:5173/tabela" usando a função 'redirect'
-                redirect('http://localhost:5173/tabela');
+                api.defaults.headers.Authorization = `Bearer ${token}`;
+                navigate('/tabela');
             }
         } catch (error) {
-            console.log('Deu erro', error);
+            console.log('Erro ao efetuar login:', error);
         }
     };
 
     return (
-        <div>
-            <div id={'container'}>
-                <div id={'imagem'}></div>
-                <div id="login">
-                    <h1>aceno</h1>
-                    <form onSubmit={handleOnSubmit}>
-                        <label htmlFor='username'>Username:</label>
-                        <input
-                            type="text"
-                            id='username'
-                            name='username'
-                            placeholder='Username'
-                            value={formData.username}
-                            onChange={handleOnChange}
-                        />
-                        <label htmlFor="password">Password:</label>
-                        <input
-                            type="password"
-                            id='password'
-                            name='password'
-                            placeholder='Password'
-                            value={formData.password}
-                            onChange={handleOnChange}
-                        />
-                        <button type="submit">Login</button>
-                    </form>
-                </div>
-            </div>
+        <div id="container">
+            <form onSubmit={handleOnSubmit}>
+                <label htmlFor="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Username" value={formData.username} onChange={handleOnChange} />
+                <label htmlFor="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Password" value={formData.password} onChange={handleOnChange} />
+                <button type="submit">Login</button>
+            </form>
         </div>
     );
 };
