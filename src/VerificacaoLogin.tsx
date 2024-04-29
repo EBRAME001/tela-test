@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './App.css';
 import { api } from './services/api';
 import { setCookie } from 'nookies';
+import './verificacao.module.css'
 
 const VerificacaoLogin = () => {
     const navigate = useNavigate();
@@ -43,7 +43,7 @@ const VerificacaoLogin = () => {
         <div id="container">
             <form onSubmit={handleOnSubmit}>
                 <label htmlFor="email">Username:</label>
-                <input type="text" id="email" name="email" placeholder="Username" value={formData.email} onChange={handleOnChange} />
+                <input type="text" id="email" name="email" placeholder="Email" value={formData.email} onChange={handleOnChange} />
                 <label htmlFor="password">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Password" value={formData.password} onChange={handleOnChange} />
                 <button type="submit">Login</button>

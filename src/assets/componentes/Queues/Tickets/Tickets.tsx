@@ -23,9 +23,11 @@ const Tickets: React.FC<TicketsProps> = ({ tickets }) => {
           style={{ 
             border: '1px solid gray', 
             padding: '20px', 
-            width: '250px', 
+            width: hoveredId === ticket.id ? '270px' : '250px', 
+            transform: hoveredId === ticket.id ? 'scale(1.1)' : 'none', 
             boxShadow: hoveredId === ticket.id ? '0 8px 16px rgba(0,0,0,0.3)' : '0 4px 8px rgba(0,0,0,0.1)', 
-            transition: 'all 0.3s ease' 
+            transition: 'all 0.3s ease',
+            zIndex: hoveredId === ticket.id ? 1 : 0 
           }}
           onMouseEnter={() => setHoveredId(ticket.id)}
           onMouseLeave={() => setHoveredId(null)}
@@ -34,12 +36,6 @@ const Tickets: React.FC<TicketsProps> = ({ tickets }) => {
           <p><strong>Priority:</strong> {ticket.priority}</p>
           <p><strong>Coverage Time:</strong> {ticket.coverage_time ?? 'N/A'} minutes</p>
           <p><strong>Stage:</strong> {ticket.active_stage ?? 'None'}</p>
-          {hoveredId === ticket.id && (
-            <div>
-              <p><strong>:</strong></p>
-              
-            </div>
-          )}
         </div>
       ))}
     </div>
