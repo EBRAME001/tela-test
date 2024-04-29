@@ -1,43 +1,49 @@
-import React, { useEffect, useState } from "react";
-import { api } from "../../../../services/api";
-import "./Tickets.css"; 
+import React, { useState } from 'react';
 
 interface Ticket {
-    id: string;
-    title: string;
-    active_stage: string | null;
-    priority: string;
-    coverage_time: number | null;
+  id: string;
+  title: string;
+  active_stage: string | null;
+  priority: string;
+  coverage_time: number | null;
 }
 
-const Tickets = () => {
-    const [tickets, setTickets] = useState<Ticket[]>([]);
+interface TicketsProps {
+  tickets: Ticket[];
+}
 
-    useEffect(() => {
-        const fetchTickets = async () => {
-            try {
-                const response = await api.get(`tickets`); // Ajuste a URL conforme necessário
-                setTickets(response.data);
-            } catch (error) {
-                console.error('Erro ao buscar tickets:', error);
-            }
-        };
+const Tickets: React.FC<TicketsProps> = ({ tickets }) => {
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
-        fetchTickets();
-    }, []);
-
-    return (
-        <div className="tickets-grid">
-            {tickets.map((ticket) => (
-                <div key={ticket.id} className="ticket-card">
-                    <h3>{ticket.title}</h3>
-                    <p>Prioridade: {ticket.priority}</p>
-                    <p>Estágio Ativo: {ticket.active_stage || "Nenhum"}</p>
-                    <p>Tempo de Cobertura: {ticket.coverage_time ? `${ticket.coverage_time} minutos` : "Não especificado"}</p>
-                </div>
-            ))}
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
+      {tickets.map(ticket => (
+        <div 
+          key={ticket.id} 
+          style={{ 
+            border: '1px solid gray', 
+            padding: '20px', 
+            width: '250px', 
+            boxShadow: hoveredId === ticket.id ? '0 8px 16px rgba(0,0,0,0.3)' : '0 4px 8px rgba(0,0,0,0.1)', 
+            transition: 'all 0.3s ease' 
+          }}
+          onMouseEnter={() => setHoveredId(ticket.id)}
+          onMouseLeave={() => setHoveredId(null)}
+        >
+          <h3>{ticket.title}</h3>
+          <p><strong>Priority:</strong> {ticket.priority}</p>
+          <p><strong>Coverage Time:</strong> {ticket.coverage_time ?? 'N/A'} minutes</p>
+          <p><strong>Stage:</strong> {ticket.active_stage ?? 'None'}</p>
+          {hoveredId === ticket.id && (
+            <div>
+              <p><strong>:</strong></p>
+              
+            </div>
+          )}
         </div>
-    );
+      ))}
+    </div>
+  );
 };
 
 export default Tickets;

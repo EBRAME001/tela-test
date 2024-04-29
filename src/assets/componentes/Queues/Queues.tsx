@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../../../services/api";
+import Tickets from './Tickets/Tickets';
 
-interface Queue {
-    id: number;
-    name: string;
-    company_id: number;
-    created_at: string;
-    updated_at: string;
+interface Ticket {
+  id: string;
+  title: string;
+  active_stage: string | null;
+  priority: string;
+  coverage_time: number | null;
 }
 
 const Queues = () => {
     const { id } = useParams<{ id: string }>();
-    const [queue, setQueue] = useState<Queue | null>(null); 
-    console.log('queue: ', queue)
-    
+    const [tickets, setTickets] = useState<Ticket[]>([]);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await api.get(`queues/${id}/tickets`);
                 console.log('Dados recebidos da API:', response.data);
-                setQueue(response.data);
+                setTickets(response.data);
             } catch (error) {
                 console.log('Erro ao buscar dados da API:', error);
             }
@@ -31,33 +31,7 @@ const Queues = () => {
 
     return (
         <div>
-            {queue ? (
-                <div>
-                    <h2>Detalhes da Fila</h2>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>ID da Empresa</th>
-                            <th>Data de Criação</th>
-                            <th>Data de Atualização</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>{queue.id}</td>
-                            <td>{queue.name}</td>
-                            <td>{queue.company_id}</td>
-                            <td>{queue.created_at}</td>
-                            <td>{queue.updated_at}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            ) : (
-                <p>Carregando...</p>
-            )}
+            <Tickets tickets={tickets} />
         </div>
     );
 };
