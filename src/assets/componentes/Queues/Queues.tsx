@@ -13,11 +13,12 @@ interface Queue {
 const Queues = () => {
     const { id } = useParams<{ id: string }>();
     const [queue, setQueue] = useState<Queue | null>(null); 
+    console.log('queue: ', queue)
     
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await api.get(`queues/${id}`);
+                const response = await api.get(`queues/${id}/tickets`);
                 console.log('Dados recebidos da API:', response.data);
                 setQueue(response.data);
             } catch (error) {

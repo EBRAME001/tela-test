@@ -7,7 +7,7 @@ import { setCookie } from 'nookies';
 const VerificacaoLogin = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        username: '',
+        email: '',
         password: ''
     });
 
@@ -18,9 +18,10 @@ const VerificacaoLogin = () => {
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
+
+        console.log(formData)
         try {
             const response = await api.post('login', formData);
-            console.log(response);
             if (response.status === 200) {
                 const { token, refreshToken, is_admin: isAdmin, user_id: userId, company_id: companyId } = response.data;
 
@@ -41,8 +42,8 @@ const VerificacaoLogin = () => {
     return (
         <div id="container">
             <form onSubmit={handleOnSubmit}>
-                <label htmlFor="username">Username:</label>
-                <input type="text" id="username" name="username" placeholder="Username" value={formData.username} onChange={handleOnChange} />
+                <label htmlFor="email">Username:</label>
+                <input type="text" id="email" name="email" placeholder="Username" value={formData.email} onChange={handleOnChange} />
                 <label htmlFor="password">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Password" value={formData.password} onChange={handleOnChange} />
                 <button type="submit">Login</button>
