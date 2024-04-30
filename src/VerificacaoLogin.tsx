@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from './services/api';
 import { setCookie } from 'nookies';
-import './verificacao.module.css'
+import styles from './verificacao.module.css'; 
 
 const VerificacaoLogin = () => {
     const navigate = useNavigate();
@@ -19,12 +19,12 @@ const VerificacaoLogin = () => {
     const handleOnSubmit = async (e) => {
         e.preventDefault();
 
-        console.log(formData)
         try {
             const response = await api.post('login', formData);
             if (response.status === 200) {
+                // Desestruturação dos dados
                 const { token, refreshToken, is_admin: isAdmin, user_id: userId, company_id: companyId } = response.data;
-
+                // Configuração dos cookies
                 setCookie(null, 'aceno.token', token, { maxAge: 30 * 24 * 60 * 60, path: '/' });
                 setCookie(null, 'aceno.refreshToken', refreshToken, { maxAge: 30 * 24 * 60 * 60, path: '/' });
                 setCookie(null, 'aceno.userId', userId, { maxAge: 30 * 24 * 60 * 60, path: '/' });
@@ -40,13 +40,15 @@ const VerificacaoLogin = () => {
     };
 
     return (
-        <div id="container">
-            <form onSubmit={handleOnSubmit}>
-                <label htmlFor="email">Username:</label>
-                <input type="text" id="email" name="email" placeholder="Email" value={formData.email} onChange={handleOnChange} />
-                <label htmlFor="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Password" value={formData.password} onChange={handleOnChange} />
-                <button type="submit">Login</button>
+        <div className={styles.container}>
+
+            <h2>aceno</h2>
+            <form onSubmit={handleOnSubmit} className={styles.form}>
+                <label htmlFor="email"></label>
+                <input type="text" id="email" name="email" placeholder="Email" className={styles.input} value={formData.email} onChange={handleOnChange} />
+                <label htmlFor="password"></label>
+                <input type="password" id="password" name="password" placeholder="Password" className={styles.input} value={formData.password} onChange={handleOnChange} />
+                <button type="submit" className={styles.button}>Login</button>
             </form>
         </div>
     );

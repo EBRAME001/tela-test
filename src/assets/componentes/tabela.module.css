@@ -11,16 +11,16 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: max-content;
 }
 
-table {
+.tabela {
     width: 50vw;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-.header-tabela th {
+.headerTabela th {
     background: #a9a9ec;
     color: white;
     padding: 10px;

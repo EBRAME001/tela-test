@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../services/api";
-import "./tabela.css";
+import styles from "./tabela.module.css"; // Importação atualizada
 
 interface Queue {
     id: number;
@@ -25,9 +25,9 @@ const Tabela = () => {
 
     return (
         <div>
-            <table>
+            <table className={styles.tabela}>
                 <thead>
-                <tr>
+                <tr className={styles.headerTabela}>
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Detalhes</th>
