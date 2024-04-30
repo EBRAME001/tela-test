@@ -1,47 +1,56 @@
-
 .containerBackground{
-    height: max-content;
-    width: fit-content;
-    padding: 20px 20px ; 
-    background-color: #21D4FD;
-    background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
+  height: max-content;
+  width: fit-content;
+  padding: 20px 20px; 
+  background-color: #21D4FD;
+  background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
 }
 
 .ticketsContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    align-items: stretch;
-  }
-  
-  .ticketCard {
-    border: 1px solid gray;
-    width: 250px;
-    height: 200px;
-    cursor: pointer;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative; /* Garante que o z-index funcione corretamente */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.ticketCard {
+  border: 1px solid gray;
+  width: 250px;
+  height: 200px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative; 
+}
+
+.ticketCard:hover {
+  border: 4px solid #e4ff5a;
 }
 
 .ticketCardClicked {
-    transform: scale(1.1); /* Aplica a transformação de escala ao card */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    z-index: 10; /* Eleva o z-index para garantir que o ticket seja destacado */
+  transform: scale(1.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  z-index: 10; 
+  
 }
 
-  .ticketContent {
-    padding: 20px;
-    transition: transform 0.3s ease;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .ticketContentClicked {
-    transform: scale(1.1);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    z-index: 1;
-  }
-  
+.ticketContent {
+  padding: 20px;
+  transition: transform 0.3s ease;
+  width: 100%;
+  height: 100%;
+}
+
+.ticketContentClicked {
+  transform: scale(1.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+.ticketDetailsExpanded {
+  padding: 10px;
+  margin-top: 10px;
+  border-top: 1px solid #ccc;
+  background-color: #f9f9f9;
+}
